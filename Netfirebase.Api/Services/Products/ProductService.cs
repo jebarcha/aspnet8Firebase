@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bogus.DataSets;
+using Microsoft.EntityFrameworkCore;
 using Netfirebase.Api.Data;
 using Netfirebase.Api.Models.Domain;
 
@@ -15,43 +16,54 @@ public class ProductService : IProductService
 
     public async Task Create(Product product)
     {
-        var result = await _context.Database.ExecuteSqlAsync(@$"
-            INSERT INTO ""Products""
-            (
-               Name, Description, Price
-            )
-            VALUES
-            (
-                {product.Name},
-                {product.Description},
-                {product.Price}
-            )
-        ");
-
-        if (result <= 0 )
+        try
         {
-            throw new Exception("Errors adding the product");
+            await _context.Database.ExecuteSqlAsync(@$"
+                CALL sp_insert_product({product.Price}, {product.Name}, {product.Description})
+            ");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error inserting the product", ex);
         }
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _context.Database.ExecuteSqlAsync($@"
+                CALL sp_delete_product({id})
+            ");
+        }
+        catch (Exception)
+        {
+            throw new Exception($"Errors deleting the product id {id}");
+        }
     }
 
     public async Task<IEnumerable<Product>> GetAll()
     {
         return await _context.Database.SqlQuery<Product>(@$"
-            SELECT * FROM ""Products""
+            SELECT * FROM fx_query_product_all()
         ").ToListAsync();
     }
 
     public async Task<Product> GetById(int id)
     {
         var result = await _context.Database.SqlQuery<Product>(@$"
-            SELECT * FROM ""Products""
-            WHERE Id={id}
-        ").FirstOrDefaultAsync();
+            SELECT * FROM fx_query_product_by_id({id})
+        ").ToListAsync();
+
+        var product = result.FirstOrDefault();
+        return product;
+    }
+
+    public async Task<List<Product>> GetByName(string name)
+    {
+        var result = await _context.Database.SqlQuery<Product>(@$"
+            SELECT * FROM fx_query_product_by_name({name})
+        ").ToListAsync();
 
         return result is null ? null! : result;
     }
@@ -61,8 +73,18 @@ public class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    public Task Update(Product product)
+    public async Task Update(Product product)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _context.Database.ExecuteSqlAsync(@$"
+                CALL sp_update_product({product.Id}, {product.Price}, {product.Name}, {product.Description})
+            ");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Errors updating the product id {product.Id}", ex);
+        }
+       
     }
 }

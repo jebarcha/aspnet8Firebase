@@ -37,6 +37,24 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("name/{name}")]
+    public async Task<ActionResult> GetProduct(string name)
+    {
+        var result = await _productService.GetByName(name);
+        return Ok(result);
+    }
 
+    [HttpPut]
+    public async Task<ActionResult> UpdateProduct([FromBody] Product request)
+    {
+        await _productService.Update(request);
+        return Ok();
+    }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> UpdateProduct(int id)
+    {
+        await _productService.Delete(id);
+        return Ok();
+    }
 }
