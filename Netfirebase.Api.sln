@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netfirebase.Api", "Netfirebase.Api\Netfirebase.Api.csproj", "{427B08F6-B383-4837-9E3B-24AA0EE3E9E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netfirebase.Api", "Netfirebase.Api\Netfirebase.Api.csproj", "{427B08F6-B383-4837-9E3B-24AA0EE3E9E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D0632B5E-91E1-4C19-9DE9-8EACC3EBF8D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{F4B03077-5DB8-42FD-A9BF-A645AB5C3B97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{1F05BFF8-8055-4C32-99D5-69C5111E5936}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "blazor", "src\blazor\blazor.csproj", "{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +23,10 @@ Global
 		{427B08F6-B383-4837-9E3B-24AA0EE3E9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{427B08F6-B383-4837-9E3B-24AA0EE3E9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{427B08F6-B383-4837-9E3B-24AA0EE3E9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -26,6 +34,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{427B08F6-B383-4837-9E3B-24AA0EE3E9E7} = {F4B03077-5DB8-42FD-A9BF-A645AB5C3B97}
 		{F4B03077-5DB8-42FD-A9BF-A645AB5C3B97} = {D0632B5E-91E1-4C19-9DE9-8EACC3EBF8D7}
+		{1F05BFF8-8055-4C32-99D5-69C5111E5936} = {D0632B5E-91E1-4C19-9DE9-8EACC3EBF8D7}
+		{AA29A8C4-BB3A-40C0-84CA-2C76629B1DE9} = {1F05BFF8-8055-4C32-99D5-69C5111E5936}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {465D19A3-3829-4CAD-9446-5F485A34EDE0}

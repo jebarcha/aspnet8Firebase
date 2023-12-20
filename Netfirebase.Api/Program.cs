@@ -53,6 +53,12 @@ builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.Authenticati
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -65,6 +71,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.AddTestData();
