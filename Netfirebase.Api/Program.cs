@@ -4,12 +4,23 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Netfirebase.Api.Services.Products;
+using Netfirebase.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = builder.Configuration
+    .GetConnectionString("ConnectionString") ?? throw new ArgumentNullException("Connection string not found");
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
 
 FirebaseApp.Create(new AppOptions
 {
@@ -30,15 +41,18 @@ builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.Authenticati
     jwtOptions.TokenValidationParameters.ValidIssuer = builder.Configuration["Authentication:ValidIssuer"];
 });
 
-builder.Services.AddDbContext<DatabaseContext>(opt =>
-{
-    opt.LogTo(Console.WriteLine, new[] {
-        DbLoggerCategory.Database.Command.Name
-    },
-    LogLevel.Information
-    ).EnableSensitiveDataLogging();
-    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabase"));
-});
+//builder.Services.AddDbContext<DatabaseContext>(opt =>
+//{
+//    opt.LogTo(Console.WriteLine, new[] {
+//        DbLoggerCategory.Database.Command.Name
+//    },
+//    LogLevel.Information
+//    ).EnableSensitiveDataLogging();
+//    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabase"));
+//});
+
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 var app = builder.Build();
 
@@ -52,5 +66,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.AddTestData();
 
 app.Run();
