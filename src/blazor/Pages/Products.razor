@@ -1,0 +1,60 @@
+﻿@page "/products"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Products from Postgress onCloud</h3>
+
+<button @onclick="AddProduct" class="btn btn-primary">Add New Product</button>
+
+@if(products!.Count <= 0)
+{
+    <p><em>Loading products...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>
+                        <button @onclick="() => EditProduct(product.Id)" class="btn btn-primary">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<blazor.Models.Product>? products = new List<blazor.Models.Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<List<blazor.Models.Product>>("/api/product");
+    }
+
+    void AddProduct()
+    {
+        NavigationManager.NavigateTo("/product");
+    }
+
+    void EditProduct(int id)
+    {
+        NavigationManager.NavigateTo($"/product/{id}");
+    }
+
+}

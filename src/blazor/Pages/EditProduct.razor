@@ -1,0 +1,82 @@
+﻿@page "/product"
+@page "/product/{id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@if (Id is null)
+{
+    <PageTitle>Create a new product</PageTitle>
+    <h3>Create New Product</h3>
+}
+else
+{
+    <PageTitle>Edit @product.Name</PageTitle>
+    <h3>Edit @product.Name</h3>
+}
+
+<EditForm Model="product" OnSubmit="HandleSubmit">
+    <div>
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="product.Name" class="form-control"/>
+    </div>
+    <div>
+        <label for="description">Description</label>
+        <InputText id="description" @bind-Value="product.Description" class="form-control" />
+    </div>
+    <div>
+        <label for="price">Price</label>
+        <InputNumber id="price" @bind-Value="product.Price" class="form-control" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary mt-3 x-3">Save</button>
+
+    @if(Id is not null)
+    {
+        <button type="button" class="btn btn-danger mt-3" @onclick="DeleteProduct">Delete</button>
+    }
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    blazor.Models.Product product = new blazor.Models.Product { Name = "Macbook" };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var result = await Http.GetFromJsonAsync<blazor.Models.Product>($"/api/product/{Id}");
+            if (result is not null)
+            {
+                product = result;
+            }
+        }
+
+    }
+
+
+    async Task HandleSubmit()
+    {
+        if (Id is null)
+        {
+            await Http.PostAsJsonAsync("/api/product", product);
+        }
+        else
+        {
+            product.Id = Id ?? 0;
+            await Http.PutAsJsonAsync("/api/product", product);
+            //await Http.PutAsJsonAsync($"/api/product/{Id}", product);
+        }
+
+        NavigationManager.NavigateTo("/products");
+    }
+
+    async Task DeleteProduct()
+    {
+        await Http.DeleteAsync($"/api/product/{product.Id}");
+        NavigationManager.NavigateTo("/products");
+    }
+
+}
