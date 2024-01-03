@@ -1,0 +1,80 @@
+﻿@page "/register"
+@attribute [AllowAnonymous]
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<EditForm Model="registerModel">
+    <div class="vh-100 d-flex justify-content-center align-items-center bg-light">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card-body p-5">
+                        <div class="mb-3 mt-md-3">
+
+                            <h2 class="f2-bold mb-3">App Api-Blazor-Postgres-Firebase</h2>
+                            <p class="mb-5">Register</p>
+
+                            <div class="mb-3">
+                                <label for="fullName">Full Name</label>
+                                <InputText id="fullName" @bind-Value="registerModel.FullName" class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email">Email</label>
+                                <InputText id="email" @bind-Value="registerModel.Email" class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <InputText id="password" type="password" @bind-Value="registerModel.Password" class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <button class="btn btn-outline-dark" type="button"
+                                        @onclick="HandleRegister">
+                                    Register
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <p class="mb-0 text-center">
+                                Already have an account?
+                                <button class="btn btn-link"
+                                        @onclick="LoginUser">
+                                    Login
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</EditForm>
+
+
+@code {
+    private RegisterModel registerModel = new RegisterModel();
+
+    async Task HandleRegister()
+    {
+        var result = await AuthService.Register(registerModel);
+        if (string.IsNullOrEmpty(result))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Console.WriteLine("Error in register");
+        }
+    }
+
+    void LoginUser()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+}

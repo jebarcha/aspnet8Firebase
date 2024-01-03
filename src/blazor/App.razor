@@ -1,5 +1,26 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="typeof(MainLayout)">
+            <NotAuthorized>
+                <blazor.Shared.RedirectToLogin></blazor.Shared.RedirectToLogin>
+            </NotAuthorized>
+            <Authorizing>
+                Verifying user session...
+            </Authorizing>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Page Not Found</PageTitle>
+        <div>The page does not exist</div>
+    </NotFound>
+
+</Router>
+
+
+
+@* <Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
@@ -9,4 +30,4 @@
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
-</Router>
+</Router> *@

@@ -1,0 +1,76 @@
+﻿@page "/login"
+@attribute [AllowAnonymous]
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+@* <h3>Login</h3> *@
+
+<EditForm Model="loginModel">
+    <div class="vh-100 d-flex justify-content-center align-items-center bg-light">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card-body p-5">
+                        <div class="mb-3 mt-md-3">
+
+                            <h2 class="f2-bold mb-3">App Api-Blazor-Postgres-Firebase</h2>
+                            <p class="mb-5">Specify User and Password</p>
+
+                            <div class="mb-3">
+                                <label for="email">Email</label>
+                                <InputText id="email" @bind-Value="loginModel.Email" class="form-control"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <InputText id="password" type="password" @bind-Value="loginModel.Password" class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <button class="btn btn-outline-dark" type="button"
+                                    @onclick="HandleLogin">
+                                    Login
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <p class="mb-0 text-center">
+                                Don't have an account?
+                                <button class="btn btn-link"
+                                    @onclick="RegisterUser"
+                                >Register</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    async Task HandleLogin()
+    {
+        var result = await AuthService.Login(loginModel);
+        if (result is not null)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Console.WriteLine("Error in login");
+        }
+    }
+
+    void RegisterUser()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
+
+}

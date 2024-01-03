@@ -41,7 +41,7 @@ else
     [Parameter]
     public int? Id { get; set; }
 
-    blazor.Models.Product product = new blazor.Models.Product { Name = "Macbook" };
+    blazor.Models.Product product = new blazor.Models.Product();
 
     protected override async Task OnParametersSetAsync()
     {

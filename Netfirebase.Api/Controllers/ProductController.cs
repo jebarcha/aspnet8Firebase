@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Netfirebase.Api.Authentication;
 using Netfirebase.Api.Models.Domain;
+using Netfirebase.Api.Models.Enums;
 using Netfirebase.Api.Services.Products;
 
 namespace Netfirebase.Api.Controllers;
@@ -16,6 +18,9 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
+
+    //[Authorize(Roles = "Administrator")]
+    [HasPermission(PermissionEnum.WriteUser)]
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] Product request)
     {
@@ -23,6 +28,7 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult> GetProducts()
     {
@@ -44,6 +50,7 @@ public class ProductController : ControllerBase
         return Ok(result);
     }
 
+    [HasPermission(PermissionEnum.WriteUser)]
     [HttpPut]
     public async Task<ActionResult> UpdateProduct([FromBody] Product request)
     {
@@ -51,8 +58,9 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
+    [HasPermission(PermissionEnum.WriteUser)]
     [HttpDelete("{id}")]
-    public async Task<ActionResult> UpdateProduct(int id)
+    public async Task<ActionResult> DeleteById(int id)
     {
         await _productService.Delete(id);
         return Ok();
