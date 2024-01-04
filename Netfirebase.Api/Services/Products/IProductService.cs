@@ -1,4 +1,6 @@
 ﻿using Netfirebase.Api.Models.Domain;
+using Netfirebase.Api.Pagination;
+using Netfirebase.Api.Vms;
 
 namespace Netfirebase.Api.Services.Products;
 
@@ -11,4 +13,6 @@ public interface IProductService
     Task Update(Product product);
     Task Delete(int id);
     Task<bool> SaveChanges();
+
+    Task<PagedResults<ProductVm>> GetPagination(PaginationParams request);
 }

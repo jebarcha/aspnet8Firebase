@@ -142,7 +142,7 @@ namespace Netfirebase.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Netfirebase.Api.Models.Domain.UserRole", b =>

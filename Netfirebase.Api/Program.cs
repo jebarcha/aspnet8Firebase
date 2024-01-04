@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Netfirebase.Api.Data;
 using Netfirebase.Api.Services.Authentication;
 using Netfirebase.Api.Services.Products;
+using Netfirebase.Api.Pagination;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +77,7 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 
-
+builder.Services.AddScoped<IPagedList, PagedList>();
 
 builder.Services.AddCors(options => {
     options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()

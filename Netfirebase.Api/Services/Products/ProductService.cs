@@ -2,16 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Netfirebase.Api.Data;
 using Netfirebase.Api.Models.Domain;
+using Netfirebase.Api.Pagination;
+using Netfirebase.Api.Vms;
 
 namespace Netfirebase.Api.Services.Products;
 
 public class ProductService : IProductService
 {
     private readonly DatabaseContext _context;
+    private readonly IPagedList _pagination;
 
-    public ProductService(DatabaseContext databaseContext)
+    public ProductService(DatabaseContext databaseContext, IPagedList pagination)
     {
         _context = databaseContext;
+        _pagination = pagination;
     }
 
     public async Task Create(Product product)
@@ -66,6 +70,20 @@ public class ProductService : IProductService
         ").ToListAsync();
 
         return result is null ? null! : result;
+    }
+
+    public async Task<PagedResults<ProductVm>> GetPagination(PaginationParams request)
+    {
+        var query = _context.Database.SqlQuery<ProductVm>($@"
+            SELECT * FROM ""Products""
+        ");
+
+        return await _pagination.CreatePagedGenericResults(
+            query,
+            request.PageNumber,
+            request.PageSize,
+            request.OrderBy!,
+            request.OrderAsc);
     }
 
     public Task<bool> SaveChanges()

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Netfirebase.Api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240103175722_AuthorizationCreate2")]
-    partial class AuthorizationCreate2
+    [Migration("20240104220135_AuthorizationCreate")]
+    partial class AuthorizationCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,7 +145,7 @@ namespace Netfirebase.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Netfirebase.Api.Models.Domain.UserRole", b =>
