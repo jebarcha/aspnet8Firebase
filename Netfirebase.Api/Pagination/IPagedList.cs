@@ -8,4 +8,12 @@ public interface IPagedList
         int pageSize,
         string orderBy,
         bool ascending);
+
+    Task<PagedResults<TResult>> CreatePagedEntryAndGenericResults<T, TResult>(
+       IQueryable<T> queryable,
+       int page,
+       int pageSize,
+       string orderBy,
+       bool ascending);
+
 }

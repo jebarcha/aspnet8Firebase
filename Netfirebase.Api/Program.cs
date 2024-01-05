@@ -12,6 +12,8 @@ using Netfirebase.Api.Data;
 using Netfirebase.Api.Services.Authentication;
 using Netfirebase.Api.Services.Products;
 using Netfirebase.Api.Pagination;
+using AutoMapper;
+using Netfirebase.Api.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +75,15 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 //    opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabase"));
 //});
+
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
